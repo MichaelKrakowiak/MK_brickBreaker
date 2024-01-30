@@ -20,7 +20,6 @@ let rightPressed = false;
 let leftPressed = false;
 
 //Briques 
-
 const brickRowCount = 3;
 const brickColumnCount = 5;
 const brickWidth = 75;
@@ -31,13 +30,17 @@ const brickOffsetLeft = 30;
 
 
 let bricks = [];
-for (let column = 0; column < brickColumnCount ; column ++){
-  bricks[column]= [];
-  for (let row = 0; row < brickRowCount; row ++){
-    bricks[column][row] = {x: 0, y: 0, status: 1}
+for (let column = 0; column < brickColumnCount; column++) {
+  bricks[column] = [];
+  for (let row = 0; row < brickRowCount; row++) {
+    bricks[column][row] = { x: 0, y: 0, status: 1 }
   }
   console.log(bricks)
 };
+
+//Score
+
+let score = 0;
 
 // Functions
 
@@ -57,9 +60,9 @@ function drawPaddle() {
   ctx.closePath();
 }
 
-function drawBricks(){
-  for (let column = 0; column < brickColumnCount; column ++) {
-    for (let row = 0; row < brickRowCount; row ++) {
+function drawBricks() {
+  for (let column = 0; column < brickColumnCount; column++) {
+    for (let row = 0; row < brickRowCount; row++) {
       if (bricks[column][row].status == 1) {
         let brickX = column * (brickWidth + brickPadding) + brickOffsetLeft;
         let brickY = row * (brickHeight + brickPadding) + brickOffsetTop;
@@ -81,6 +84,7 @@ function draw() {
   drawPaddle();
   drawBricks();
   collisionDetection();
+  drawScore();
 
   x += dx;
   y += dy;
@@ -93,9 +97,9 @@ function draw() {
     dy = -dy;
   } else if (y + dy > canvas.height - ballRadius) {
     if (x > paddleX && x < paddleX + paddleWidth) {
-     dy = -dy;
+      dy = -dy;
     } else {
-      alert('GAME OVER');
+      alert(`GAME OVER - Votre score est de ${score} points !`);
       document.location.reload()
       clearInterval(interval) // Permet de mettre fin à la partie et de rafraichir la page 
     }
@@ -134,17 +138,29 @@ function keyUpHandler(e) {
 }
 
 function collisionDetection() {
-  for (let column = 0; column < brickColumnCount; column ++){
-    for (let row = 0; row < brickRowCount; row ++){
+  for (let column = 0; column < brickColumnCount; column++) {
+    for (let row = 0; row < brickRowCount; row++) {
       let brick = bricks[column][row];
       if (brick.status == 1) {
         if (x > brick.x && x < brick.x + brickWidth && y > brick.y && y < brick.y + brickHeight) {
           dy = -dy;
           brick.status = 0;
+          score++; //rajoute un point supplémentaire à chaque brique détruite
+          if (score == brickRowCount * brickColumnCount) {
+            alert("C'est gagné, Félicitations!");
+            document.location.reload();
+            clearInterval(interval);
+          }
         }
       }
     }
   }
 };
+
+function drawScore() {
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText("Score: " + score, 8, 20);
+}
 
 let interval = setInterval(draw, 10);
