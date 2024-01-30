@@ -39,8 +39,10 @@ for (let column = 0; column < brickColumnCount; column++) {
 };
 
 //Score
-
 let score = 0;
+
+//Vies
+let lives = 3;
 
 // Functions
 
@@ -85,6 +87,7 @@ function draw() {
   drawBricks();
   collisionDetection();
   drawScore();
+  drawLives();
 
   x += dx;
   y += dy;
@@ -99,9 +102,17 @@ function draw() {
     if (x > paddleX && x < paddleX + paddleWidth) {
       dy = -dy;
     } else {
-      alert(`GAME OVER - Votre score est de ${score} points !`);
-      document.location.reload()
-      clearInterval(interval) // Permet de mettre fin à la partie et de rafraichir la page 
+      lives--;
+      if (!lives) {
+        alert(`GAME OVER - Votre score est de ${score} points !`);
+        document.location.reload()
+      } else {
+        x = canvas.width / 2;
+        y = canvas.height - 30;
+        dx = 2;
+        dy = -2;
+        paddleX = (canvas.width - paddleWidth) / 2;
+      }
     }
   };
 
@@ -116,6 +127,7 @@ function draw() {
       paddleX = 0;
     }
   }
+  requestAnimationFrame(draw);
 }
 
 //Controle des mouvements de la raquette
@@ -158,7 +170,6 @@ function collisionDetection() {
           if (score == brickRowCount * brickColumnCount) {
             alert("C'est gagné, Félicitations!");
             document.location.reload();
-            clearInterval(interval);
           }
         }
       }
@@ -172,4 +183,10 @@ function drawScore() {
   ctx.fillText("Score: " + score, 8, 20);
 }
 
-let interval = setInterval(draw, 10);
+function drawLives() {
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
+}
+
+draw();
