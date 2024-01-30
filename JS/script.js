@@ -20,13 +20,13 @@ let rightPressed = false;
 let leftPressed = false;
 
 //Briques 
-const brickRowCount = 4;
-const brickColumnCount = 6;
+const brickRowCount = 6;
+const brickColumnCount = 13;
 const brickWidth = 75;
 const brickHeight = 20;
 const brickPadding = 10;
-const brickOffsetTop = 30;
-const brickOffsetLeft = 30;
+const brickOffsetTop = 50;
+const brickOffsetLeft = 50;
 
 
 let bricks = [];
@@ -49,7 +49,7 @@ let lives = 3;
 function drawBall() {
   ctx.beginPath();
   ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-  ctx.fillStyle = "purple";
+  ctx.fillStyle = "red ";
   ctx.fill();
   ctx.closePath();
 }
