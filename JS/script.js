@@ -20,8 +20,8 @@ let rightPressed = false;
 let leftPressed = false;
 
 //Briques 
-const brickRowCount = 3;
-const brickColumnCount = 5;
+const brickRowCount = 4;
+const brickColumnCount = 6;
 const brickWidth = 75;
 const brickHeight = 20;
 const brickPadding = 10;
