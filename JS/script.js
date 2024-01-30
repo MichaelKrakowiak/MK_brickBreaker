@@ -19,9 +19,25 @@ let = paddleX = (canvas.width - paddleHeight) / 2;
 let rightPressed = false;
 let leftPressed = false;
 
+//Briques 
+
+const brickRowCount = 3;
+const brickColumnCount = 5;
+const brickWidth = 75;
+const brickHeight = 20;
+const brickPadding = 10;
+const brickOffsetTop = 30;
+const brickOffsetLeft = 30;
 
 
-
+let bricks = [];
+for (let column = 0; column < brickColumnCount ; column ++){
+  bricks[column]= [];
+  for (let row = 0; row < brickRowCount; row ++){
+    bricks[column][row] = {x: 0, y: 0}
+  }
+  console.log(bricks)
+};
 
 // Functions
 
@@ -41,10 +57,28 @@ function drawPaddle() {
   ctx.closePath();
 }
 
+function drawBricks(){
+  for (let column = 0; column < brickColumnCount; column ++) {
+    for (let row = 0; row < brickRowCount; row ++) {
+      let brickX = column * (brickWidth + brickPadding) + brickOffsetLeft;
+      let brickY = row * (brickHeight + brickPadding) + brickOffsetTop;
+      bricks[column][row].x = brickX;
+      bricks[column][row].y = brickY;
+      ctx.beginPath();
+      ctx.rect(brickX, brickY, brickWidth, brickHeight);
+      ctx.fillStyle = "#0095DD";
+      ctx.fill();
+      ctx.closePath();
+    }
+  }
+};
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBall();
   drawPaddle();
+  drawBricks();
+
   x += dx;
   y += dy;
 
@@ -97,5 +131,3 @@ function keyUpHandler(e) {
 }
 
 let interval = setInterval(draw, 10);
-
-
